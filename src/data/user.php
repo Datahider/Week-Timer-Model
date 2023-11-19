@@ -24,4 +24,30 @@ class user extends DBObject {
         'UNIQUE INDEX TELEGRAM_ID'    => 'telegram_id',
     ];
 
+    protected function beforeInsert($comment, $data) {
+        parent::beforeInsert($comment, $data);
+        $this->__data['name'] = 'tmp';
+        $this->__data['week_start'] = 'mon';
+    }
+    
+    protected function intranInsert($comment, $data) {
+        
+        parent::intranInsert($comment, $data);
+
+        $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost Time', 'is_archived' => false, 'is_system' => true], true);
+        $lost_time->write();
+        
+        $planning = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Planning', 'is_archived' => false, 'is_system' => true], true);
+        $planning->write();
+        
+        $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Sleeping', 'is_archived' => false, 'is_system' => true], true);
+        $sleeping->write();
+        
+        $reserved = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Reserved', 'is_archived' => false, 'is_system' => true], true);
+        $reserved->write();
+        
+        $this->__data['name'] = 'u'. $this->id;
+        $this->update($comment, $data);
+        
+    }
 }

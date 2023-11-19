@@ -25,8 +25,6 @@ class Model {
         plan_item::initDataStructure();
         timer_event::initDataStructure();
         user::initDataStructure();
-        
-        DB::addTracker(DBEvent::INTRAN_INSERT, user::class, user_creation::class);
     }
     
 }

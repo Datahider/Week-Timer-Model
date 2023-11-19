@@ -14,7 +14,7 @@ class userTest extends TestCase {
     
     public function testUserCreation() {
         
-        $user = new user(['id' => null, 'name' => 'user 1', 'week_start' => 'mon'], true);
+        $user = new user();
         $user->write();
         
         $list_plan_items = new DBList(plan_item::class, ['user' => $user->id]);
@@ -25,5 +25,6 @@ class userTest extends TestCase {
         $this->assertEquals('Planning', $plan_items[1]->title);
         $this->assertEquals('Sleeping', $plan_items[2]->title);
         $this->assertEquals('Reserved', $plan_items[3]->title);
+        
     }
 }
