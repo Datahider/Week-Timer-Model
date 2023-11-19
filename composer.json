@@ -1,0 +1,22 @@
+{
+    "name": "vendor/week-timer-model",
+    "description": "Description of project WeekTimerModel.",
+    "authors": [
+        {
+            "name": "Petros Ioannidis",
+            "email": "pio@pio.su"
+        }
+    ],
+    "require": {
+        "losthost/db": "v3.0.2-alpha"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "10.4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "losthost\\WeekTimerModel\\": "src/",
+            "losthost\\WeekTimerModel\\test\\": "test/"
+        }
+    }
+}
