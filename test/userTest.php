@@ -20,11 +20,12 @@ class userTest extends TestCase {
         $list_plan_items = new DBList(plan_item::class, ['user' => $user->id]);
         $plan_items = $list_plan_items->asArray();
         
-        $this->assertEquals(4, count($plan_items));
-        $this->assertEquals('Lost Time', $plan_items[0]->title);
-        $this->assertEquals('Planning', $plan_items[1]->title);
-        $this->assertEquals('Sleeping', $plan_items[2]->title);
-        $this->assertEquals('Reserved', $plan_items[3]->title);
+        $this->assertEquals(5, count($plan_items));
+        $this->assertEquals('Lost', $plan_items[0]->title);
+        $this->assertEquals('Plan', $plan_items[1]->title);
+        $this->assertEquals('Sleep', $plan_items[2]->title);
+        $this->assertEquals('Work', $plan_items[3]->title);
+        $this->assertEquals('Reserve', $plan_items[4]->title);
         
     }
 }
