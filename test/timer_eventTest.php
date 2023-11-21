@@ -30,7 +30,7 @@ class timer_eventTest extends TestCase {
         $e2->write();
         
         $e1->fetch();
-        $this->assert(5, $e1->duration);
+        $this->assertEquals(5, $e1->duration);
         
     }
     
