@@ -1,6 +1,6 @@
 {
     "name": "vendor/week-timer-model",
-    "description": "Description of project WeekTimerModel.",
+    "description": "Data model for time accounting and management tool.",
     "authors": [
         {
             "name": "Petros Ioannidis",
