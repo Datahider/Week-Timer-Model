@@ -25,12 +25,14 @@ class Model {
     
     static protected Model $model;
 
-    static public function init($db_host, $db_user, $db_pass, $db_name, $db_prefix) : Model {
+    static public function init(string $db_host='', string $db_user='', string $db_pass='', string $db_name='', string $db_prefix='') : Model {
         if (isset(self::$model)) {
             return self::$model;
         }
         
-        DB::connect($db_host, $db_user, $db_pass, $db_name, $db_prefix);
+        if ($db_host. $db_user. $db_pass. $db_name. $db_prefix != '') {
+            DB::connect($db_host, $db_user, $db_pass, $db_name, $db_prefix);
+        }
 
         plan::initDataStructure();
         plan_item::initDataStructure();
