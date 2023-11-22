@@ -19,6 +19,7 @@ class user extends DBObject {
         'name'  => 'VARCHAR(50) NOT NULL',
         'telegram_id'   => 'BIGINT(20) UNSIGNED',
         'week_start'    => 'ENUM("mon", "sun") NOT NULL',
+        'time_zone'     => 'VARCHAR(6) NOT NULL',
         'PRIMARY KEY'   => 'id',
         'UNIQUE INDEX NAME'    => 'name',
         'UNIQUE INDEX TELEGRAM_ID'    => 'telegram_id',
@@ -28,6 +29,7 @@ class user extends DBObject {
         parent::beforeInsert($comment, $data);
         $this->__data['name'] = 'tmp';
         $this->__data['week_start'] = 'mon';
+        $this->__data['time_zone'] = '+03:00';
     }
     
     protected function intranInsert($comment, $data) {
