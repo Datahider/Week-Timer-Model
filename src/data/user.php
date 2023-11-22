@@ -29,7 +29,7 @@ class user extends DBObject {
         parent::beforeInsert($comment, $data);
         $this->__data['name'] = 'tmp';
         $this->__data['week_start'] = 'mon';
-        $this->__data['time_zone'] = '+03:00';
+        $this->__data['time_zone'] = 300;
     }
     
     protected function intranInsert($comment, $data) {

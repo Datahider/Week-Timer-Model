@@ -10,6 +10,7 @@ use losthost\WeekTimerModel\data\plan;
 use losthost\WeekTimerModel\data\plan_item;
 use losthost\WeekTimerModel\data\timer_event;
 use losthost\WeekTimerModel\data\user;
+use losthost\WeekTimerModel\data\time_zone;
 
 use losthost\DB\DBView;
 
@@ -38,6 +39,7 @@ class Model {
         plan_item::initDataStructure();
         timer_event::initDataStructure();
         user::initDataStructure();
+        time_zone::initDataStructure();
         
         self::$model = new Model('DGzWG_n57QMbKT');
         return self::$model;
