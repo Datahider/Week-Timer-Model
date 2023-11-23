@@ -29,6 +29,11 @@ class user extends DBObject {
         'UNIQUE INDEX TELEGRAM_ID'    => 'telegram_id',
     ];
 
+    public function getTimezoneName() {
+        $tz = new time_zone(['id' => $this->time_zone]);
+        return $tz->name;
+    }
+    
     protected function beforeInsert($comment, $data) {
         parent::beforeInsert($comment, $data);
         if (!isset($this->__data['name'])) {

@@ -28,4 +28,11 @@ class userTest extends TestCase {
         $this->assertEquals('Reserve', $plan_items[4]->title);
         
     }
+    
+    public function testUserTimezoneName() {
+        $user = new user();
+        $user->time_zone = -1000;
+        
+        $this->assertEquals('GMT-10:00', $user->getTimezoneName());
+    }
 }
