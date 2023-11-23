@@ -21,6 +21,8 @@ class user extends DBObject {
         'week_start'    => 'ENUM("mon", "sun") NOT NULL',
         'time_zone'     => 'INT(11) NOT NULL',
         'pending_time_zone' => 'INT(11)',
+        'start_shown' => 'TINYINT(1) NOT NULL DEFAULT 0',
+        'morestart_shown' => 'TINYINT(1) NOT NULL DEFAULT 0',
         'PRIMARY KEY'   => 'id',
         'UNIQUE INDEX NAME'    => 'name',
         'UNIQUE INDEX TELEGRAM_ID'    => 'telegram_id',
@@ -31,6 +33,8 @@ class user extends DBObject {
         $this->__data['name'] = 'tmp';
         $this->__data['week_start'] = 'mon';
         $this->__data['time_zone'] = 300;
+        $this->__data['start_shown'] = 0;
+        $this->__data['morestart_shown'] = 0;
     }
     
     protected function intranInsert($comment, $data) {
