@@ -29,10 +29,10 @@ class userTest extends TestCase {
         
     }
     
-    public function testUserTimezoneName() {
+    public function testUserTimezone() {
         $user = new user();
         $user->time_zone = -1000;
         
-        $this->assertEquals('GMT-10:00', $user->getTimezoneName());
+        $this->assertEquals(new \DateTimeZone('GMT-10:00'), $user->getTimezone());
     }
 }

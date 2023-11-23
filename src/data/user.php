@@ -8,12 +8,16 @@
 namespace losthost\WeekTimerModel\data;
 use losthost\DB\DBObject;
 use losthost\DB\DB;
+use DateTimeZone;
 /**
  * Description of user
  *
  * @author drweb_000
  */
 class user extends DBObject {
+    
+    protected string $__timezone_name;
+    protected DateTimeZone $__timezone;
     
     const METADATA = [
         'id'    => 'BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT',
@@ -29,9 +33,13 @@ class user extends DBObject {
         'UNIQUE INDEX TELEGRAM_ID'    => 'telegram_id',
     ];
 
-    public function getTimezoneName() {
+    public function getTimezoneName() : string {
         $tz = new time_zone(['id' => $this->time_zone]);
         return $tz->name;
+    }
+    
+    public function getTimezone() : DateTimeZone {
+        return new DateTimeZone($this->getTimezoneName());
     }
     
     protected function beforeInsert($comment, $data) {
