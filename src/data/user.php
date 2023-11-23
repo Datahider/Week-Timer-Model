@@ -7,6 +7,7 @@
 
 namespace losthost\WeekTimerModel\data;
 use losthost\DB\DBObject;
+use losthost\DB\DB;
 /**
  * Description of user
  *
@@ -19,6 +20,7 @@ class user extends DBObject {
         'name'  => 'VARCHAR(50) NOT NULL',
         'telegram_id'   => 'BIGINT(20) UNSIGNED',
         'week_start'    => 'ENUM("mon", "sun") NOT NULL',
+        'registered'    => 'DATETIME NOT NULL DEFAULT "1111-11-11"',
         'time_zone'     => 'INT(11) NOT NULL',
         'pending_time_zone' => 'INT(11)',
         'start_shown' => 'TINYINT(1) NOT NULL DEFAULT 0',
@@ -29,10 +31,21 @@ class user extends DBObject {
 
     protected function beforeInsert($comment, $data) {
         parent::beforeInsert($comment, $data);
-        $this->__data['name'] = 'tmp';
-        $this->__data['week_start'] = 'mon';
-        $this->__data['time_zone'] = 300;
-        $this->__data['start_shown'] = 0;
+        if (!isset($this->__data['name'])) {
+            $this->__data['name'] = 'tmp';
+        }
+        if (!isset($this->__data['week_start'])) {
+            $this->__data['week_start'] = 'mon';
+        }
+        if (!isset($this->__data['time_zone'])) {
+            $this->__data['time_zone'] = 300;
+        }
+        if (!isset($this->__data['start_shown'])) {
+            $this->__data['start_shown'] = 0;
+        }
+        if (!isset($this->__data['registered'])) {
+            $this->__data['registered'] = date_create()->format(DB::DATE_FORMAT);
+        }
     }
     
     protected function intranInsert($comment, $data) {
