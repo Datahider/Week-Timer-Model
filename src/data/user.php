@@ -42,6 +42,23 @@ class user extends DBObject {
         return new DateTimeZone($this->getTimezoneName());
     }
     
+    
+    protected function toDateTime($value) {
+        if ($value === null) {
+            return null;
+        }
+        $result = new \DateTimeImmutable($value);
+        return $result->setTimezone($this->getTimezone());
+    }
+    
+    protected function formatDateTime($value) {
+        if (is_a($value, '\DateTime') || is_a($value, '\DateTimeImmutable')) {
+            return $value->setTimezone(new DateTimeZone('GMT'))->format(DB::DATE_FORMAT);
+        }
+        
+        throw new \Exception("The value must be of type DateTime or DateTimeImmutable.", -10003);
+    }
+    
     protected function beforeInsert($comment, $data) {
         parent::beforeInsert($comment, $data);
         if (!isset($this->__data['name'])) {

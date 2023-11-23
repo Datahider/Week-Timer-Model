@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use losthost\WeekTimerModel\data\user;
 use losthost\WeekTimerModel\data\plan_item;
 use losthost\DB\DBList;
+use losthost\DB\DB;
 /**
  * Description of userTest
  *
@@ -34,5 +35,18 @@ class userTest extends TestCase {
         $user->time_zone = -1000;
         
         $this->assertEquals(new \DateTimeZone('GMT-10:00'), $user->getTimezone());
+    }
+    
+    public function testWritingAndReadingTime() {
+        $user = new user();
+        $user->time_zone = 500;
+        $user->write();
+        
+        $this->assertEquals(date_create('now', $user->getTimezone())->format(DB::DATE_FORMAT), $user->registered->format(DB::DATE_FORMAT));
+        
+        $user->registered = date_create('2022-10-11', $user->getTimezone());
+        $user->write();
+        
+        $this->assertEquals(date_create('2022-10-11', $user->getTimezone()), $user->registered);
     }
 }
