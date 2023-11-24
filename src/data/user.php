@@ -82,19 +82,19 @@ class user extends DBObject {
         
         parent::intranInsert($comment, $data);
 
-        $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost', 'is_system' => true], true);
+        $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost', 'type' => 'lost'], true);
         $lost_time->write();
         
-        $planning = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Plan', 'is_system' => true], true);
+        $planning = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Plan', 'type' => 'plan'], true);
         $planning->write();
         
-        $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Sleep', 'is_system' => true], true);
+        $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Sleep', 'type' => 'sleep'], true);
         $sleeping->write();
         
-        $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Work', 'is_system' => true], true);
+        $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Work', 'type' => 'work'], true);
         $sleeping->write();
         
-        $reserved = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Reserve', 'is_system' => true], true);
+        $reserved = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Reserve', 'type' => 'reserve'], true);
         $reserved->write();
         
         $timer = new timer_event(['id' => null, 'plan_item' => $planning->id], true);

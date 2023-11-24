@@ -42,7 +42,7 @@ class ModelTest extends TestCase {
         $user = $m->userCreate();
         sleep(5); // wait 5 seconds (emulate planning)
         
-        $sleep = new plan_item(['title' => 'Sleep', 'user' => $user->id, 'is_system' => true]);
+        $sleep = new plan_item(['title' => 'Sleep', 'user' => $user->id, 'type' => 'sleep']);
         $sleep_timer = $m->timerStartExistent($sleep->id);
         sleep(70); // wait 70 seconds (emulante sleeping)
         

@@ -22,7 +22,8 @@ class plan_item extends DBObject {
 //        'has_bell' => 'TINYINT(1) NOT NULL',    // Выдавать сигнал для окончания
 //        'bell_after'  => 'BIGINT(20)',          // Время в секундах, через сколько выдать сигнал
         'is_archived' => 'TINYINT(1) NOT NULL',
-        'is_system' => 'TINYINT(1) NOT NULL',
+//        'is_system' => 'TINYINT(1) NOT NULL',
+        'type' => 'ENUM("lost", "plan", "sleep", "work", "reserve")',
         'PRIMARY KEY'   => 'id',
         'INDEX USER'    => 'user'
     ];
@@ -33,9 +34,6 @@ class plan_item extends DBObject {
         if ($this->isNew()) {
             if (!isset($this->__data['is_archived'])) {
                 $this->is_archived = false;
-            }
-            if (!isset($this->__data['is_system'])) {
-                $this->is_system = false;
             }
         }
     }

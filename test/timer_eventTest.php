@@ -41,10 +41,10 @@ class timer_eventTest extends TestCase {
         $user2 = new user();
         $user2->write();
         
-        $item_plan1 = new plan_item(['user' => $user1->id, 'is_system' => true, 'title' => 'Plan']);
-        $item_plan2 = new plan_item(['user' => $user2->id, 'is_system' => true, 'title' => 'Plan']);
-        $item_lost1 = new plan_item(['user' => $user1->id, 'is_system' => true, 'title' => 'Lost']);
-        $item_sleep2 = new plan_item(['user' => $user2->id, 'is_system' => true, 'title' => 'Sleep']);
+        $item_plan1 = new plan_item(['user' => $user1->id, 'type' => 'plan', 'title' => 'Plan']);
+        $item_plan2 = new plan_item(['user' => $user2->id, 'type' => 'plan', 'title' => 'Plan']);
+        $item_lost1 = new plan_item(['user' => $user1->id, 'type' => 'lost', 'title' => 'Lost']);
+        $item_sleep2 = new plan_item(['user' => $user2->id, 'type' => 'sleep', 'title' => 'Sleep']);
         
         $event1_1 = new timer_event(['id' => null, 'plan_item' => $item_plan1->id], true);
         $event1_1->write();
