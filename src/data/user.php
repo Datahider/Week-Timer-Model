@@ -28,6 +28,8 @@ class user extends DBObject {
         'time_zone'     => 'INT(11) NOT NULL',
         'pending_time_zone' => 'INT(11)',
         'start_shown' => 'TINYINT(1) NOT NULL DEFAULT 0',
+        'report_show_titles' => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'active_plan' => 'BIGINT(20)',
         'PRIMARY KEY'   => 'id',
         'UNIQUE INDEX NAME'    => 'name',
         'UNIQUE INDEX TELEGRAM_ID'    => 'telegram_id',
@@ -75,6 +77,9 @@ class user extends DBObject {
         }
         if (!isset($this->__data['registered'])) {
             $this->__data['registered'] = date_create()->format(DB::DATE_FORMAT);
+        }
+        if (!isset($this->__data['report_show_titles'])) {
+            $this->__data['report_show_titles'] = 1;
         }
     }
     
