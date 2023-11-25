@@ -88,6 +88,9 @@ class user extends DBObject {
         
         parent::intranInsert($comment, $data);
 
+        $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost', 'icon' => '🗑', 'type' => 'lost', 'sort_order' => 2000000000], true);
+        $lost_time->write();
+        
         $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Sleep', 'icon' => '🛌', 'type' => 'sleep'], true);
         $sleeping->write();
         
@@ -99,9 +102,6 @@ class user extends DBObject {
         
         $rest = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Rest', 'icon' => '🧘', 'type' => 'rest'], true);
         $rest->write();
-        
-        $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost', 'icon' => '🗑', 'type' => 'lost'], true);
-        $lost_time->write();
         
         $timer = new timer_event(['id' => null, 'plan_item' => $planning->id], true);
         $timer->write();

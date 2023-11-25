@@ -45,7 +45,7 @@ class plan_item extends DBObject {
         parent::beforeInsert($comment, $data);
 
         if (!isset($this->__data['sort_order'])) {
-            $sql = 'SELECT MAX(sort_order)+1 as num FROM '. $this->tableName(). ' WHERE user = ?';
+            $sql = 'SELECT MAX(sort_order)+1 as num FROM '. $this->tableName(). ' WHERE user = ? AND sort_order < 2000000000';
             $new_sort_order = new DBView($sql, [$this->user]);
             if ($new_sort_order->next() && !is_null($new_sort_order->num)) {
                 $this->__data['sort_order'] = $new_sort_order->num;
