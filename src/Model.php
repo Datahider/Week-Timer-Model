@@ -73,8 +73,8 @@ class Model {
         return $timer;
     }
     
-    public function timerStartNew(int $user_id, string $title) {
-        $plan_item = new plan_item(['id' => null, 'user' => $user_id, 'title' => $title], true);
+    public function timerStartNew(int $user_id, string $title, string $icon) {
+        $plan_item = new plan_item(['id' => null, 'user' => $user_id, 'title' => $title, 'icon' => $icon], true);
         $plan_item->write();
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item->id], true);
         $timer->write();

@@ -46,7 +46,7 @@ class ModelTest extends TestCase {
         $sleep_timer = $m->timerStartExistent($sleep->id);
         sleep(70); // wait 70 seconds (emulante sleeping)
         
-        $timer = $m->timerStartNew($user->id, 'Watching movie');
+        $timer = $m->timerStartNew($user->id, 'Watching movie', '📽');
         $start_time = $timer->start_time;
         
         $m->timerChangeStartTime($timer->id, -1);
