@@ -88,19 +88,19 @@ class user extends DBObject {
         
         parent::intranInsert($comment, $data);
 
-        $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Sleep', 'type' => 'sleep'], true);
+        $sleeping = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Sleep', 'icon' => '🛌', 'type' => 'sleep'], true);
         $sleeping->write();
         
-        $working = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Work', 'type' => 'work'], true);
+        $working = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Work', 'icon' => '🛠', 'type' => 'work'], true);
         $working->write();
         
-        $planning = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Plan', 'type' => 'plan'], true);
+        $planning = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Plan', 'icon' => '🗓', 'type' => 'plan'], true);
         $planning->write();
         
-        $rest = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Rest', 'type' => 'rest'], true);
+        $rest = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Rest', 'icon' => '🧘', 'type' => 'rest'], true);
         $rest->write();
         
-        $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost', 'type' => 'lost'], true);
+        $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost', 'icon' => '🗑', 'type' => 'lost'], true);
         $lost_time->write();
         
         $timer = new timer_event(['id' => null, 'plan_item' => $planning->id], true);
