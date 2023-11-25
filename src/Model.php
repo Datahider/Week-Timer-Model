@@ -107,4 +107,26 @@ class Model {
         }
         DB::commit();
     }
+    
+    public function timerGetActive(int $user_id) : timer_event {
+        
+        $found = new DBView(<<<END
+                SELECT 
+                    t_events.id AS id
+                FROM 
+                    [timer_event] AS t_events 
+                    INNER JOIN [plan_item] AS t_items
+                        ON t_items.id = t_events.plan_item
+                WHERE
+                    t_events.end_time IS NULL
+                    AND t_items.user = ?
+                END, 
+                $user_id
+        );
+        
+        if ($found->next()) {
+            return new timer_event(['id' => $found->id]);
+        }
+        return false;
+    }
 }

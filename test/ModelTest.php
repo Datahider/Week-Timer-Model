@@ -60,4 +60,17 @@ class ModelTest extends TestCase {
         
     }
     
+    public function testGetCurrentTimerEvent() {
+        
+        $m = Model::get();
+        
+        $user = $m->userCreate();
+        $sleep = new plan_item(['user' => $user->id, 'type' => 'sleep']);
+        $sleep_timer = $m->timerStartExistent($sleep->id);
+        
+        $active = $m->timerGetActive($user->id);
+        $this->assertEquals($sleep_timer, $active);
+        
+    }
+    
 }
