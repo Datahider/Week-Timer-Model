@@ -30,6 +30,7 @@ class user extends DBObject {
         'start_shown' => 'TINYINT(1) NOT NULL DEFAULT 0',
         'report_show_titles' => 'TINYINT(1) NOT NULL DEFAULT 1',
         'active_plan' => 'BIGINT(20)',
+        'active_message' => 'BIGINT(20)', // Идентиификатор активного отчета (где надо тыкать по иконкам)
         'PRIMARY KEY'   => 'id',
         'UNIQUE INDEX NAME'    => 'name',
         'UNIQUE INDEX TELEGRAM_ID'    => 'telegram_id',
