@@ -22,11 +22,11 @@ class userTest extends TestCase {
         $plan_items = $list_plan_items->asArray();
         
         $this->assertEquals(5, count($plan_items));
-        $this->assertEquals('Lost', $plan_items[0]->title);
-        $this->assertEquals('Plan', $plan_items[1]->title);
-        $this->assertEquals('Sleep', $plan_items[2]->title);
-        $this->assertEquals('Work', $plan_items[3]->title);
-        $this->assertEquals('Reserve', $plan_items[4]->title);
+        $this->assertEquals('Sleep', $plan_items[0]->title);
+        $this->assertEquals('Work', $plan_items[1]->title);
+        $this->assertEquals('Plan', $plan_items[2]->title);
+        $this->assertEquals('Rest', $plan_items[3]->title);
+        $this->assertEquals('Lost', $plan_items[4]->title);
         
     }
     

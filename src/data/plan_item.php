@@ -25,7 +25,7 @@ class plan_item extends DBObject {
 //        'bell_after'  => 'BIGINT(20)',          // Время в секундах, через сколько выдать сигнал
         'is_archived' => 'TINYINT(1) NOT NULL',
 //        'is_system' => 'TINYINT(1) NOT NULL',
-        'type' => 'ENUM("lost", "plan", "sleep", "work", "reserve")',
+        'type' => 'ENUM("lost", "plan", "reserve", "rest", "sleep", "work")',
         'sort_order' => 'INT NOT NULL DEFAULT 1',
         'PRIMARY KEY'   => 'id',
         'INDEX USER'    => 'user'

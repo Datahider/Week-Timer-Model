@@ -97,6 +97,9 @@ class user extends DBObject {
         $planning = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Plan', 'type' => 'plan'], true);
         $planning->write();
         
+        $rest = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Rest', 'type' => 'rest'], true);
+        $rest->write();
+        
         $lost_time = new plan_item(['id' => null, 'user' => $this->id, 'title' => 'Lost', 'type' => 'lost'], true);
         $lost_time->write();
         
