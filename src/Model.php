@@ -129,4 +129,25 @@ class Model {
         }
         return false;
     }
+    
+    public function planItemGetNeighbors($plan_item_id) {
+        
+        $item = new plan_item(['id' => $plan_item_id]);
+        
+        $data = new DBView("SELECT id, sort_order FROM [plan_item] WHERE user = :user_id AND (sort_order = :sort_order - 1 OR sort_order = :sort_order + 1) ORDER BY sort_order", [
+            'user_id' => $item->user,
+            'sort_order' => $item->sort_order
+        ]);
+
+        $neighbors = [];
+        while ($data->next()) {
+            if ($data->sort_order > $item->sort_order) {
+                $neighbors['next'] = new plan_item(['id' => $data->id]);
+            } else {
+                $neighbors['prev'] = new plan_item(['id' => $data->id]);
+            }
+        }
+        
+        return $neighbors;
+    }
 }

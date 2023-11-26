@@ -73,4 +73,29 @@ class ModelTest extends TestCase {
         
     }
     
+    public function testGetPlanItemNeighbors() {
+        $model = Model::get();
+        $user = $model->userCreate();
+        
+        $active = $model->timerGetActive($user->id);
+        $neighbors = $model->planItemGetNeighbors($active->plan_item);
+        
+        $this->assertEquals(2, $neighbors['prev']->sort_order);
+        $this->assertEquals(4, $neighbors['next']->sort_order);
+        
+        $prev_neighbors = $model->planItemGetNeighbors($neighbors['prev']->id);
+        $before_prev_neighbors = $model->planItemGetNeighbors($prev_neighbors['prev']->id);
+        
+        $this->assertFalse(isset($before_prev_neighbors['prev']));
+        $this->assertEquals(2, $before_prev_neighbors['next']->sort_order);
+        
+        $next_neighbors = $model->planItemGetNeighbors($neighbors['next']->id);
+        
+        $this->assertEquals(3, $next_neighbors['prev']->sort_order);
+        $this->assertFalse(isset($next_neighbors['next']));
+        
+        
+        
+    }
+    
 }
