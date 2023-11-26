@@ -4,7 +4,8 @@ namespace losthost\WeekTimerModel\test;
 use PHPUnit\Framework\TestCase;
 use losthost\WeekTimerModel\data\user;
 use losthost\WeekTimerModel\data\plan_item;
-use losthost\DB\DBList;
+use losthost\DB\DBView;
+use losthost\DB\DB;
 /**
  * Description of userTest
  *
@@ -17,15 +18,33 @@ class userTest extends TestCase {
         $user = new user();
         $user->write();
         
-        $list_plan_items = new DBList(plan_item::class, ['user' => $user->id]);
-        $plan_items = $list_plan_items->asArray();
+        $items_view = new DBView("SELECT title FROM [plan_item] WHERE user = ? ORDER BY sort_order ASC", $user->id);
         
-        $this->assertEquals(5, count($plan_items));
-        $this->assertEquals('Lost', $plan_items[0]->title);
-        $this->assertEquals('Plan', $plan_items[1]->title);
-        $this->assertEquals('Sleep', $plan_items[2]->title);
-        $this->assertEquals('Work', $plan_items[3]->title);
-        $this->assertEquals('Reserve', $plan_items[4]->title);
+        foreach (['Sleep', 'Work', 'Plan', 'Rest', 'Lost'] as $title) {
+            $items_view->next();
+            $this->assertEquals($title, $items_view->title);
+        }
+        $this->assertFalse($items_view->next());
         
+    }
+    
+    public function testUserTimezone() {
+        $user = new user();
+        $user->time_zone = -1000;
+        
+        $this->assertEquals(new \DateTimeZone('GMT-10:00'), $user->getTimezone());
+    }
+    
+    public function testWritingAndReadingTime() {
+        $user = new user();
+        $user->time_zone = 500;
+        $user->write();
+        
+        $this->assertEquals(date_create('now', $user->getTimezone())->format(DB::DATE_FORMAT), $user->registered->format(DB::DATE_FORMAT));
+        
+        $user->registered = date_create('2022-10-11', $user->getTimezone());
+        $user->write();
+        
+        $this->assertEquals(date_create('2022-10-11', $user->getTimezone()), $user->registered);
     }
 }

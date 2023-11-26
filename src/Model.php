@@ -10,6 +10,7 @@ use losthost\WeekTimerModel\data\plan;
 use losthost\WeekTimerModel\data\plan_item;
 use losthost\WeekTimerModel\data\timer_event;
 use losthost\WeekTimerModel\data\user;
+use losthost\WeekTimerModel\data\time_zone;
 
 use losthost\DB\DBView;
 
@@ -25,17 +26,20 @@ class Model {
     
     static protected Model $model;
 
-    static public function init($db_host, $db_user, $db_pass, $db_name, $db_prefix) : Model {
+    static public function init(string $db_host='', string $db_user='', string $db_pass='', string $db_name='', string $db_prefix='') : Model {
         if (isset(self::$model)) {
             return self::$model;
         }
         
-        DB::connect($db_host, $db_user, $db_pass, $db_name, $db_prefix);
+        if ($db_host. $db_user. $db_pass. $db_name. $db_prefix != '') {
+            DB::connect($db_host, $db_user, $db_pass, $db_name, $db_prefix);
+        }
 
         plan::initDataStructure();
         plan_item::initDataStructure();
         timer_event::initDataStructure();
         user::initDataStructure();
+        time_zone::initDataStructure();
         
         self::$model = new Model('DGzWG_n57QMbKT');
         return self::$model;
@@ -69,8 +73,8 @@ class Model {
         return $timer;
     }
     
-    public function timerStartNew(int $user_id, string $title) {
-        $plan_item = new plan_item(['id' => null, 'user' => $user_id, 'title' => $title], true);
+    public function timerStartNew(int $user_id, string $title, string $icon) {
+        $plan_item = new plan_item(['id' => null, 'user' => $user_id, 'title' => $title, 'icon' => $icon], true);
         $plan_item->write();
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item->id], true);
         $timer->write();
@@ -102,5 +106,27 @@ class Model {
             $timer_before->write();
         }
         DB::commit();
+    }
+    
+    public function timerGetActive(int $user_id) : timer_event {
+        
+        $found = new DBView(<<<END
+                SELECT 
+                    t_events.id AS id
+                FROM 
+                    [timer_event] AS t_events 
+                    INNER JOIN [plan_item] AS t_items
+                        ON t_items.id = t_events.plan_item
+                WHERE
+                    t_events.end_time IS NULL
+                    AND t_items.user = ?
+                END, 
+                $user_id
+        );
+        
+        if ($found->next()) {
+            return new timer_event(['id' => $found->id]);
+        }
+        return false;
     }
 }

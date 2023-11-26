@@ -1,3 +1,4 @@
 /nbproject/
 /test/db_pass.php
 /vendor/
+/test/.phpunit.result.cache

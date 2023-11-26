@@ -42,11 +42,11 @@ class ModelTest extends TestCase {
         $user = $m->userCreate();
         sleep(5); // wait 5 seconds (emulate planning)
         
-        $sleep = new plan_item(['title' => 'Sleep', 'user' => $user->id, 'is_system' => true]);
+        $sleep = new plan_item(['title' => 'Sleep', 'user' => $user->id, 'type' => 'sleep']);
         $sleep_timer = $m->timerStartExistent($sleep->id);
         sleep(70); // wait 70 seconds (emulante sleeping)
         
-        $timer = $m->timerStartNew($user->id, 'Watching movie');
+        $timer = $m->timerStartNew($user->id, 'Watching movie', '📽');
         $start_time = $timer->start_time;
         
         $m->timerChangeStartTime($timer->id, -1);
@@ -57,6 +57,19 @@ class ModelTest extends TestCase {
         $sleep_timer->fetch();
         $this->assertEquals(10, $sleep_timer->duration);
         
+        
+    }
+    
+    public function testGetCurrentTimerEvent() {
+        
+        $m = Model::get();
+        
+        $user = $m->userCreate();
+        $sleep = new plan_item(['user' => $user->id, 'type' => 'sleep']);
+        $sleep_timer = $m->timerStartExistent($sleep->id);
+        
+        $active = $m->timerGetActive($user->id);
+        $this->assertEquals($sleep_timer, $active);
         
     }
     

@@ -7,6 +7,8 @@
 
 namespace losthost\WeekTimerModel\data;
 use losthost\DB\DBObject;
+use losthost\DB\DBView;
+
 /**
  * Description of plan_item
  *
@@ -22,7 +24,9 @@ class plan_item extends DBObject {
 //        'has_bell' => 'TINYINT(1) NOT NULL',    // Выдавать сигнал для окончания
 //        'bell_after'  => 'BIGINT(20)',          // Время в секундах, через сколько выдать сигнал
         'is_archived' => 'TINYINT(1) NOT NULL',
-        'is_system' => 'TINYINT(1) NOT NULL',
+//        'is_system' => 'TINYINT(1) NOT NULL',
+        'type' => 'ENUM("lost", "plan", "reserve", "rest", "sleep", "work")',
+        'sort_order' => 'INT NOT NULL DEFAULT 1',
         'PRIMARY KEY'   => 'id',
         'INDEX USER'    => 'user'
     ];
@@ -34,8 +38,19 @@ class plan_item extends DBObject {
             if (!isset($this->__data['is_archived'])) {
                 $this->is_archived = false;
             }
-            if (!isset($this->__data['is_system'])) {
-                $this->is_system = false;
+        }
+    }
+    
+    protected function beforeInsert($comment, $data) {
+        parent::beforeInsert($comment, $data);
+
+        if (!isset($this->__data['sort_order'])) {
+            $sql = 'SELECT MAX(sort_order)+1 as num FROM '. $this->tableName(). ' WHERE user = ? AND sort_order < 2000000000';
+            $new_sort_order = new DBView($sql, [$this->user]);
+            if ($new_sort_order->next() && !is_null($new_sort_order->num)) {
+                $this->__data['sort_order'] = $new_sort_order->num;
+            } else {
+                $this->__data['sort_order'] = 1;
             }
         }
     }
