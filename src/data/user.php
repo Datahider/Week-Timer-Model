@@ -9,6 +9,8 @@ namespace losthost\WeekTimerModel\data;
 use losthost\DB\DBObject;
 use losthost\DB\DB;
 use DateTimeZone;
+use DateTimeImmutable;
+
 /**
  * Description of user
  *
@@ -45,6 +47,21 @@ class user extends DBObject {
         return new DateTimeZone($this->getTimezoneName());
     }
     
+    public function getWeekStart(?DateTimeImmutable $datetime=null) {
+        if ($datetime == null) {
+            $datetime = date_create_immutable('now', $this->getTimezone());
+        }
+        
+        if ($this->week_start == 'mon' && $datetime->format('w') == 1 || $this->week_start == 'sun' && $datetime->format('w') == 0) {
+            $first_day = 'today';
+        } elseif ($this->week_start == 'mon') {
+            $first_day = 'last monday';
+        } else {
+            $first_day = 'last sunday';
+        }
+
+        return $datetime->modify($first_day);
+    }
     
     protected function toDateTime($value) {
         if ($value === null) {

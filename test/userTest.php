@@ -47,4 +47,18 @@ class userTest extends TestCase {
         
         $this->assertEquals(date_create('2022-10-11', $user->getTimezone()), $user->registered);
     }
+    
+    public function testUserWeekStart() {
+        
+        $user = new user(['id' => null, 'time_zone' => -1200, 'week_start' => 'mon'], true);
+        
+        $t1 = $user->getWeekStart(date_create_immutable('2022-11-10', $user->getTimezone()));
+        $this->assertEquals('2022-11-07', $t1->format('Y-m-d'));
+        
+        $t2 = $user->getWeekStart(date_create_immutable('2023-09-25 00:00:01', $user->getTimezone()));
+        $this->assertEquals('2023-09-25', $t2->format('Y-m-d'));
+        
+        $t3 = $user->getWeekStart(date_create_immutable('2023-09-26', $user->getTimezone()));
+        $this->assertEquals('2023-09-25', $t3->format('Y-m-d'));
+    }
 }
