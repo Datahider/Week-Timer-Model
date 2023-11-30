@@ -22,13 +22,4 @@ class plan extends DBObject {
         'INDEX USER'    => 'user'
     ];
     
-    public function __construct($data = [], $create = false) {
-        parent::__construct($data, $create);
-        
-        if ($this->isNew()) {
-            if (!isset($this->__data['time_planned'])) {
-                $this->time_planned = 0;
-            }
-        }
-    }
 }

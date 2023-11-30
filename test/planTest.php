@@ -7,9 +7,9 @@ use losthost\WeekTimerModel\data\plan;
 
 class planTest extends TestCase {
     
-    public function canCreatePlan() {
+    public function testCanCreatePlan() {
         
-        $plan = new plan(['id' => null, 'user' => 1, 'title' => 'Test plan']);
+        $plan = new plan(['id' => null, 'user' => 1, 'title' => 'Test plan'], true);
         $plan->write();
         
         $this->assertTrue(true);
