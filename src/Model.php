@@ -8,6 +8,7 @@ use losthost\DB\DBEvent;
 
 use losthost\WeekTimerModel\data\plan;
 use losthost\WeekTimerModel\data\plan_item;
+use losthost\WeekTimerModel\data\plan_entry;
 use losthost\WeekTimerModel\data\timer_event;
 use losthost\WeekTimerModel\data\user;
 use losthost\WeekTimerModel\data\time_zone;
@@ -37,6 +38,7 @@ class Model {
 
         plan::initDataStructure();
         plan_item::initDataStructure();
+        plan_entry::initDataStructure();
         timer_event::initDataStructure();
         user::initDataStructure();
         time_zone::initDataStructure();
