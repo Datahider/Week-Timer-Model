@@ -11,6 +11,6 @@ class plan_entry extends DBObject {
         'plan_item' => 'BIGINT(20) NOT NULL',
         'time_planned' => 'BIGINT(20) NOT NULL',
         'PRIMARY KEY' => 'id',
-        'INDEX PLAN' => 'plan',
+        'UNIQUE INDEX PLAN_ITEM_PLAN' => ['plan', 'plan_item'],
     ];
 }
