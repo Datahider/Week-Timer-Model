@@ -124,6 +124,15 @@ class user extends DBObject {
         $timer = new timer_event(['id' => null, 'plan_item' => $planning->id], true);
         $timer->write();
         
+        $plan = new plan(['id' => null, 'user' => $this->id, 'title' => 'My plan'], true);
+        $plan->write();
+        
+        (new plan_entry(['id' => null, 'plan' => $plan->id, 'plan_item' => $lost_time->id, 'time_planned' => 0, 'sort_order' => 2000000000], true))->write();
+        (new plan_entry(['id' => null, 'plan' => $plan->id, 'plan_item' => $sleeping->id, 'time_planned' => 201600], true))->write();
+        (new plan_entry(['id' => null, 'plan' => $plan->id, 'plan_item' => $working->id, 'time_planned' => 144000], true))->write();
+        (new plan_entry(['id' => null, 'plan' => $plan->id, 'plan_item' => $planning->id], true))->write();
+        (new plan_entry(['id' => null, 'plan' => $plan->id, 'plan_item' => $rest->id], true))->write();
+        
         $this->__data['name'] = 'u'. $this->id;
         $this->update($comment, $data);
         
