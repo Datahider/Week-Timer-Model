@@ -134,6 +134,7 @@ class user extends DBObject {
         (new plan_entry(['id' => null, 'plan' => $plan->id, 'plan_item' => $rest->id], true))->write();
         
         $this->__data['name'] = 'u'. $this->id;
+        $this->__data['active_plan'] = $plan->id;
         $this->update($comment, $data);
         
     }
