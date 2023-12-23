@@ -46,6 +46,10 @@ class ModelTest extends TestCase {
         $sleep_timer = $m->timerStartExistent($sleep->id);
         sleep(70); // wait 70 seconds (emulante sleeping)
         
+        $planning = new plan_item(['user' => $user->id, 'type' => 'plan']);
+        $planning_timer = $m->timerStartExistent($planning->id);
+        sleep(10);
+        
         $timer = $m->timerStartNew($user->id, 'Watching movie', '📽');
         $start_time = $timer->start_time;
         
@@ -55,7 +59,9 @@ class ModelTest extends TestCase {
         $this->assertEquals(60, $start_time->getTimestamp() - $timer->start_time->getTimestamp());
         
         $sleep_timer->fetch();
-        $this->assertEquals(10, $sleep_timer->duration);
+        $this->assertEquals(20, $sleep_timer->duration);
+        
+        $planning_timer->fetch();
         
         
     }

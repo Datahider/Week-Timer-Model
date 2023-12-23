@@ -5,6 +5,7 @@ use losthost\DB\DB;
 use losthost\WeekTimerModel\data\week;
 use losthost\DB\DBValue;
 use losthost\DB\DBEvent;
+use losthost\DB\DBList;
 
 use losthost\WeekTimerModel\data\plan;
 use losthost\WeekTimerModel\data\plan_item;
@@ -86,26 +87,20 @@ class Model {
     public function timerChangeStartTime(int $event_id, int $minutes) {
         $timer = new timer_event(['id' => $event_id]);
         
-        $sql = <<<END
-                SELECT te.id 
-                FROM [timer_event] AS te 
-                    INNER JOIN [plan_item] AS pi ON te.plan_item = pi.id
-                WHERE 
-                    pi.user = (SELECT user FROM [plan_item] WHERE id = ?)
-                    AND te.end_time = ?
-                END;
-        
-        $view = new DBView($sql, [$timer->plan_item, $timer->start_time]);
-        
         $interval = date_interval_create_from_date_string("$minutes min");
         
         DB::beginTransaction();
         $timer->start_time = $timer->start_time->add($interval);
         $timer->write();
-        if ($view->next()) {
-            $timer_before = new timer_event(['id' => $view->id]);
-            $timer_before->end_time = $timer->start_time;
-            $timer_before->write();
+        
+        $modify = new DBList(timer_event::class, 'end_time > ? AND plan_item IN (SELECT id FROM [plan_item] WHERE user = (SELECT user FROM [plan_item] WHERE id = ?))', [$timer->start_time, $timer->id]);
+        while ($event = $modify->next()) {
+            if ($event->start_time >= $timer->start_time) {
+                $event->delete();
+            } else {
+                $event->end_time = $timer->start_time;
+                $event->write();
+            }
         }
         DB::commit();
     }
