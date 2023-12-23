@@ -6,6 +6,7 @@ use losthost\WeekTimerModel\data\week;
 use losthost\DB\DBValue;
 use losthost\DB\DBEvent;
 use losthost\DB\DBList;
+use losthost\WeekTimerModel\data\param;
 
 use losthost\WeekTimerModel\data\plan;
 use losthost\WeekTimerModel\data\plan_item;
@@ -45,6 +46,9 @@ class Model {
         time_zone::initDataStructure();
         
         self::$model = new Model('DGzWG_n57QMbKT');
+        
+        static::$model->update();
+        
         return self::$model;
     }
     
@@ -55,6 +59,18 @@ class Model {
     public function __construct($secret="Use Model::init to get an instance of Model.") {
         if ($secret != 'DGzWG_n57QMbKT') {
             throw new Exception("Use Model::init to get an instance of Model.");
+        }
+    }
+    
+    protected function update() {
+        $version = $this->getParam('db_version', '000000000');
+        
+        if ($version < '202312231') {
+            DB::beginTransaction();
+            DB::exec('UPDATE [user] SET restarted = registered WHERE restarted < registered');
+            $version = '202312231';
+            static::$model->setParam('db_version', $version);
+            DB::commit();
         }
     }
     
@@ -146,5 +162,20 @@ class Model {
         }
         
         return $neighbors;
+    }
+    
+    public function getParam(string $name, string $default) : string {
+        $param = new param(['name' => $name], true);
+        if ($param->isNew()) {
+            $param->value = $default;
+            $param->write();
+        }
+        return $param->value;
+    }
+    
+    public function setParam(string $name, string $value) {
+        $param = new param(['name' => $name], true);
+        $param->value = $value;
+        $param->write();
     }
 }

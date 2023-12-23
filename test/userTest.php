@@ -51,6 +51,7 @@ class userTest extends TestCase {
     public function testUserWeekStart() {
         
         $user = new user(['id' => null, 'time_zone' => -1200, 'week_start' => 'mon'], true);
+        $user->write();
         
         $t1 = $user->getWeekStart(date_create_immutable('2022-11-10', $user->getTimezone()));
         $this->assertEquals('2022-11-07', $t1->format('Y-m-d'));

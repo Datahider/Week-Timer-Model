@@ -104,4 +104,15 @@ class ModelTest extends TestCase {
         
     }
     
+    public function testGetSetParam() {
+        
+        $m = Model::get();
+        
+        $this->assertEquals('888', $m->getParam('test', '888'));
+        $this->assertEquals('888', $m->getParam('test', '123'));
+        
+        $m->setParam('test', '1234');
+        $this->assertEquals('1234', $m->getParam('test', '4321'));
+    }
+    
 }

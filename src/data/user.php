@@ -27,6 +27,7 @@ class user extends DBObject {
         'telegram_id'   => 'BIGINT(20) UNSIGNED',
         'week_start'    => 'ENUM("mon", "sun") NOT NULL',
         'registered'    => 'DATETIME NOT NULL DEFAULT "1111-11-11"',
+        'restarted'     => 'DATETIME NOT NULL DEFAULT "1111-11-11"',    
         'time_zone'     => 'INT(11) NOT NULL',
         'pending_time_zone' => 'INT(11)',
         'start_shown' => 'TINYINT(1) NOT NULL DEFAULT 0',
@@ -61,7 +62,11 @@ class user extends DBObject {
             $first_day = 'last sunday';
         }
 
-        return $datetime->modify($first_day);
+        $week_start = $datetime->modify($first_day);
+        if ($week_start->getTimestamp() < $this->restarted->getTimestamp()) {
+            $week_start = $this->restarted;
+        }
+        return $week_start;
     }
     
     protected function toDateTime($value) {
@@ -96,6 +101,9 @@ class user extends DBObject {
         }
         if (!isset($this->__data['registered'])) {
             $this->__data['registered'] = date_create()->format(DB::DATE_FORMAT);
+        }
+        if (!isset($this->__data['restarted'])) {
+            $this->__data['restarted'] = $this->__data['registered'];
         }
         if (!isset($this->__data['report_show_titles'])) {
             $this->__data['report_show_titles'] = 1;
