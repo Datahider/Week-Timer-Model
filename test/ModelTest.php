@@ -53,7 +53,7 @@ class ModelTest extends TestCase {
         $timer = $m->timerStartNew($user->id, 'Watching movie', '📽');
         $start_time = $timer->start_time;
         
-        $m->timerChangeStartTime($timer->id, -1);
+        $m->timerChangeStartTime($timer->id, -60);
         
         $timer->fetch();
         $this->assertEquals(60, $start_time->getTimestamp() - $timer->start_time->getTimestamp());
