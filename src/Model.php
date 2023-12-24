@@ -100,11 +100,11 @@ class Model {
         return $timer;
     }
     
-    public function timerChangeStartTime(int $event_id, int $minutes) {
+    public function timerChangeStartTime(int $event_id, int $seconds) {
         $timer = new timer_event(['id' => $event_id]);
         $old_start_time = $timer->start_time;
         
-        $interval = date_interval_create_from_date_string("$minutes min");
+        $interval = date_interval_create_from_date_string("$seconds sec");
         
         DB::beginTransaction();
         $timer->start_time = $timer->start_time->add($interval);
