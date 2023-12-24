@@ -102,6 +102,7 @@ class Model {
     
     public function timerChangeStartTime(int $event_id, int $minutes) {
         $timer = new timer_event(['id' => $event_id]);
+        $old_start_time = $timer->start_time;
         
         $interval = date_interval_create_from_date_string("$minutes min");
         
@@ -109,7 +110,7 @@ class Model {
         $timer->start_time = $timer->start_time->add($interval);
         $timer->write();
         
-        $modify = new DBList(timer_event::class, 'end_time > ? AND plan_item IN (SELECT id FROM [plan_item] WHERE user = (SELECT user FROM [plan_item] WHERE id = ?))', [$timer->start_time, $timer->plan_item]);
+        $modify = new DBList(timer_event::class, 'id <> ? AND end_time >= ? AND plan_item IN (SELECT id FROM [plan_item] WHERE user = (SELECT user FROM [plan_item] WHERE id = ?))', [$timer->id, min($timer->start_time,$old_start_time), $timer->plan_item]);
         while ($event = $modify->next()) {
             if ($event->start_time >= $timer->start_time) {
                 $event->delete();
