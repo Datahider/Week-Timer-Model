@@ -110,7 +110,7 @@ class Model {
         $timer->start_time = $timer->start_time->add($interval);
         $timer->write();
         
-        $modify = new DBList(timer_event::class, 'id <> ? AND end_time >= ? AND plan_item IN (SELECT id FROM [plan_item] WHERE user = (SELECT user FROM [plan_item] WHERE id = ?))', [$timer->id, min($timer->start_time,$old_start_time), $timer->plan_item]);
+        $modify = new DBList(timer_event::class, 'id <> ? AND end_time >= ? AND start_time < ? AND plan_item IN (SELECT id FROM [plan_item] WHERE user = (SELECT user FROM [plan_item] WHERE id = ?))', [$timer->id, min($timer->start_time,$old_start_time), $timer->end_time, $timer->plan_item]);
         while ($event = $modify->next()) {
             if ($event->start_time >= $timer->start_time) {
                 $event->delete();

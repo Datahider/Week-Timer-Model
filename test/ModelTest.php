@@ -66,6 +66,34 @@ class ModelTest extends TestCase {
         
     }
     
+    public function testExtendedStartTimeChange() {
+        $m = Model::get();
+        
+        $user = $m->userCreate();
+        $one_day_ago = date_interval_create_from_date_string("-1 day");
+        
+        $user->registered = $user->registered->add($one_day_ago);
+        $user->restarted = $user->registered;
+        $user->write();
+        
+        $planning = $m->timerGetActive($user->id);
+        sleep(2);
+        $test1 = $m->timerStartNew($user->id, "Test 1", "😀");
+        sleep(2);
+        $test2 = $m->timerStartNew($user->id, "Test 2", "😃");
+        sleep(2);
+        $test3 = $m->timerStartNew($user->id, "Test 3", "😄");
+        
+        $m->timerChangeStartTime($planning->id, -3600);
+        $m->timerChangeStartTime($test1->id, -1800);
+        $m->timerChangeStartTime($test2->id, -900);
+        $m->timerChangeStartTime($test3->id, -300);
+        
+        // TODO - сделать тесты для изменения времени в большую сторону (тогда конец может стать раньше нового начала, что с этим делать не понятно пока)
+        // Доделать проверку того, что получилось. Пока проверил глазами
+        $this->assertTrue(true);
+    }
+    
     public function testGetCurrentTimerEvent() {
         
         $m = Model::get();
