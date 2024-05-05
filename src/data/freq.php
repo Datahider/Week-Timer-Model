@@ -10,7 +10,7 @@ use losthost\DB\DBObject;
 class freq extends DBObject {
     
     const METADATA = [
-        'id' => 'BIGINT(20) NOT_NULL AUTO_INCREMENT',
+        'id' => 'BIGINT(20) NOT NULL AUTO_INCREMENT',
         'plan_item' => 'BIGINT(20) NOT NULL',
         'next' => 'BIGINT(20) NOT NULL',
         'freq' => 'DECIMAL(20,6) NOT NULL',
