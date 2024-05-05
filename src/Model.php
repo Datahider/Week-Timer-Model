@@ -87,13 +87,14 @@ class Model {
     /**
      * frequencies update
      */
-    public function freqUpdate(plan_item|false $current, plan_item $next) {
+    public function freqUpdate(plan_item $next) {
         
-        if ($current === false) {
+        $current_timer = $this->timerGetActive($user_id);
+        if ($current_timer === false) {
             return;
         }
         
-        $freq = new freq(['plan_item' => $current->id, 'next' => $next->id], true);
+        $freq = new freq(['plan_item' => $current_timer->plan_item, 'next' => $next->id], true);
         if ($freq->isNew()) {
             $freq->freq = 1;
         } else {
@@ -110,7 +111,7 @@ class Model {
         $sth = DB::prepare($sql);
         $sth->execute([
             'k' => 0.95,
-            'current' => $current->id,
+            'current' => $current_timer->plan_item,
             'next' => $next->id
         ]);
     }
@@ -122,7 +123,7 @@ class Model {
         
         $plan_item = new plan_item(['id' => $plan_item_id]);
         
-        $this->freqUpdate($this->timerGetActive($plan_item->user), $plan_item);
+        $this->freqUpdate($plan_item);
         
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item_id], true);
         
@@ -138,7 +139,7 @@ class Model {
         $plan_item = new plan_item(['id' => null, 'user' => $user_id, 'title' => $title, 'icon' => $icon], true);
         $plan_item->write();
 
-        $this->freqUpdate($this->timerGetActive($user_id), $plan_item->id);
+        $this->freqUpdate($plan_item->id);
 
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item->id], true);
         $timer->write();
