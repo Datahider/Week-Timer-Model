@@ -22,6 +22,7 @@ class timer_event extends DBObject {
         'start_time' => 'DATETIME NOT NULL',
         'end_time'   => 'DATETIME',
         'duration'   => 'BIGINT(20)',
+        'bell_at'    => 'DATETIME',
         'PRIMARY KEY'               => 'id',
         'INDEX PLAN_ITEM'           => 'plan_item',
         'INDEX PLAN_ITEM_START_END' => ['plan_item', 'start_time', 'end_time']
