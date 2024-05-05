@@ -15,7 +15,6 @@ use losthost\WeekTimerModel\data\timer_event;
 use losthost\WeekTimerModel\data\user;
 use losthost\WeekTimerModel\data\time_zone;
 use losthost\WeekTimerModel\data\freq;
-use losthost\DB\DB;
 
 use losthost\DB\DBView;
 
