@@ -87,7 +87,14 @@ class Model {
      * Timer
      */
     public function timerStartExistent(int $plan_item_id) {
+        
+        $plan_item = new plan_item(['id' => $plan_item_id]);
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item_id], true);
+        
+        if ($plan_item->bell_after) {
+            $timer->bell_at = $timer->start_time->add(date_interval_create_from_date_string("+$plan_item->bell_after sec"));
+        }
+        
         $timer->write();
         return $timer;
     }
