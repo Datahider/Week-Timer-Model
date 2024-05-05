@@ -14,6 +14,8 @@ use losthost\WeekTimerModel\data\plan_entry;
 use losthost\WeekTimerModel\data\timer_event;
 use losthost\WeekTimerModel\data\user;
 use losthost\WeekTimerModel\data\time_zone;
+use losthost\WeekTimerModel\data\freq;
+use losthost\DB\DB;
 
 use losthost\DB\DBView;
 
@@ -84,11 +86,45 @@ class Model {
     }
     
     /**
+     * frequencies update
+     */
+    public function freqUpdate(plan_item|false $current, plan_item $next) {
+        
+        if ($current === false) {
+            return;
+        }
+        
+        $freq = new freq(['plan_item' => $current->id, 'next' => $next->id], true);
+        if ($freq->isNew()) {
+            $freq->freq = 1;
+        } else {
+            $freq->freq = $freq->freq + 1;
+        }
+        $freq->write();
+        
+        $sql = <<<FIN
+                UPDATE [freq]
+                SET freq = freq * :k
+                WHERE plan_item = :current AND next <> :next
+                FIN;
+        
+        $sth = DB::prepare($sql);
+        $sth->execute([
+            'k' => 0.95,
+            'current' => $current->id,
+            'next' => $next->id
+        ]);
+    }
+    
+    /**
      * Timer
      */
     public function timerStartExistent(int $plan_item_id) {
         
         $plan_item = new plan_item(['id' => $plan_item_id]);
+        
+        $this->freqUpdate($this->timerGetActive($plan_item->user), $plan_item);
+        
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item_id], true);
         
         if ($plan_item->bell_after) {
@@ -102,6 +138,9 @@ class Model {
     public function timerStartNew(int $user_id, string $title, string $icon) {
         $plan_item = new plan_item(['id' => null, 'user' => $user_id, 'title' => $title, 'icon' => $icon], true);
         $plan_item->write();
+
+        $this->freqUpdate($this->timerGetActive($user_id), $plan_item->id);
+
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item->id], true);
         $timer->write();
         return $timer;
@@ -130,7 +169,7 @@ class Model {
         DB::commit();
     }
     
-    public function timerGetActive(int $user_id) : timer_event {
+    public function timerGetActive(int $user_id) : timer_event|false {
         
         $found = new DBView(<<<END
                 SELECT 
