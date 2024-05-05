@@ -139,7 +139,7 @@ class Model {
         $plan_item = new plan_item(['id' => null, 'user' => $user_id, 'title' => $title, 'icon' => $icon], true);
         $plan_item->write();
 
-        $this->freqUpdate($plan_item->id);
+        $this->freqUpdate($plan_item);
 
         $timer = new timer_event(['id' => null, 'plan_item' => $plan_item->id], true);
         $timer->write();
@@ -149,12 +149,21 @@ class Model {
     public function timerChangeStartTime(int $event_id, int $seconds) {
         $timer = new timer_event(['id' => $event_id]);
         $old_start_time = $timer->start_time;
-        $end_time = $timer->end_time === null ? date_create_immutable() : $timer->end_time;
+        $now = date_create_immutable();
+        $end_time = $timer->end_time === null ? $now : $timer->end_time;
         
         $interval = date_interval_create_from_date_string("$seconds sec");
-        
-        DB::beginTransaction();
         $timer->start_time = $timer->start_time->add($interval);
+        
+        if ($timer->start_time > $now) {
+            throw new \Exception("Can't set start_time in the future.");
+        }
+        
+        $check = new DBList(timer_event::class, 'id <> ? AND start_time < ? AND start_time >= ? AND plan_item IN (SELECT id FROM [plan_item] WHERE user = (SELECT user FROM [plan_item] WHERE id = ?))', [$timer->id, $timer->start_time, $old_start_time, $timer->plan_item]);
+        if ($check->next()) {
+            throw new \Exception("Can't set start_time earlier than start of following event.");
+        }
+        DB::beginTransaction();
         $timer->write();
         
         $modify = new DBList(timer_event::class, 'id <> ? AND end_time >= ? AND start_time < ? AND plan_item IN (SELECT id FROM [plan_item] WHERE user = (SELECT user FROM [plan_item] WHERE id = ?))', [$timer->id, min($timer->start_time,$old_start_time), $end_time, $timer->plan_item]);

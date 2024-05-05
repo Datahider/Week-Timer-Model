@@ -88,7 +88,7 @@ class ModelTest extends TestCase {
         $m->timerChangeStartTime($test1->id, -1800);
         $m->timerChangeStartTime($test2->id, -900);
         $m->timerChangeStartTime($test3->id, -300);
-        
+        $m->timerChangeStartTime($test2->id, 500);
         // TODO - сделать тесты для изменения времени в большую сторону (тогда конец может стать раньше нового начала, что с этим делать не понятно пока)
         // Доделать проверку того, что получилось. Пока проверил глазами
         $this->assertTrue(true);
