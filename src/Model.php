@@ -89,7 +89,7 @@ class Model {
      */
     public function freqUpdate(plan_item $next) {
         
-        $current_timer = $this->timerGetActive($user_id);
+        $current_timer = $this->timerGetActive($next->user);
         if ($current_timer === false) {
             return;
         }
