@@ -29,6 +29,7 @@ class user extends DBObject {
         'registered'    => 'DATETIME NOT NULL DEFAULT "1111-11-11"',
         'restarted'     => 'DATETIME NOT NULL DEFAULT "1111-11-11"',    
         'time_zone'     => 'INT(11) NOT NULL',
+        'show_links'    => 'TINYINT(1) NOT NULL DEFAULT 1',
         'pending_time_zone' => 'INT(11)',
         'start_shown' => 'TINYINT(1) NOT NULL DEFAULT 0',
         'report_show_titles' => 'TINYINT(1) NOT NULL DEFAULT 1',
@@ -95,6 +96,9 @@ class user extends DBObject {
         }
         if (!isset($this->__data['time_zone'])) {
             $this->__data['time_zone'] = 300;
+        }
+        if (!isset($this->__data['show_links'])) {
+            $this->__data['show_links'] = true;
         }
         if (!isset($this->__data['start_shown'])) {
             $this->__data['start_shown'] = 0;
