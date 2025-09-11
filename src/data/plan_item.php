@@ -15,7 +15,7 @@ class plan_item extends DBObject {
         'id'    => 'BIGINT(20) NOT NULL AUTO_INCREMENT',
         'user'  => 'BIGINT(20) NOT NULL',
         'title' => 'VARCHAR(300) NOT NULL',
-        'icon'  => 'VARCHAR(5)',                // Иконка для изображения на кнопке и в тексте
+        'icon'  => 'VARCHAR(16)',                // Иконка для изображения на кнопке и в тексте
 //        'has_bell' => 'TINYINT(1) NOT NULL',    // Выдавать сигнал для окончания
         'bell_after'  => 'BIGINT(20)',          // Время в секундах, через сколько выдать сигнал
         'is_archived' => 'TINYINT(1) NOT NULL',
