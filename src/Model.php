@@ -125,7 +125,7 @@ class Model {
         
         $this->freqUpdate($plan_item);
         
-        $timer = new timer_event(['id' => null, 'plan_item' => $plan_item_id], true);
+        $timer = new timer_event(['id' => null, 'plan_item' => $plan_item_id, 'start_time' => new \DateTime('1 second ago')], true);
         
         if ($plan_item->bell_after) {
             $timer->bell_at = $timer->start_time->add(date_interval_create_from_date_string("+$plan_item->bell_after sec"));
@@ -141,7 +141,7 @@ class Model {
 
         $this->freqUpdate($plan_item);
 
-        $timer = new timer_event(['id' => null, 'plan_item' => $plan_item->id], true);
+        $timer = new timer_event(['id' => null, 'plan_item' => $plan_item->id, 'start_time' => new \DateTime('1 second ago')], true);
         $timer->write();
         return $timer;
     }
